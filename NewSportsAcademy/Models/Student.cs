@@ -19,5 +19,7 @@ namespace NewSportsAcademy.Models
         public string MedicalInformation { get; set; }
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+
+        public ICollection<Fixture> Fixtures { get; set; } // Navigation property
     }
 }

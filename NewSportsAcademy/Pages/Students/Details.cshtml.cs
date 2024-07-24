@@ -12,32 +12,37 @@ namespace NewSportsAcademy.Pages.Students
 {
     public class DetailsModel : PageModel
     {
-        private readonly NewSportsAcademy.Data.SchoolContext _context;
+        private readonly SchoolContext _context;
 
-        public DetailsModel(NewSportsAcademy.Data.SchoolContext context)
+        public DetailsModel(SchoolContext context)
         {
             _context = context;
         }
 
-      public Student Student { get; set; } = default!; 
+        public Student Student { get; set; }
+        public IList<Fixture> Fixtures { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Students == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var student = await _context.Students.FirstOrDefaultAsync(m => m.StudentID == id);
-            if (student == null)
+            Student = await _context.Students
+                .Include(s => s.Fixtures)
+                .ThenInclude(f => f.Sport)
+                .FirstOrDefaultAsync(m => m.StudentID == id);
+
+            if (Student == null)
             {
                 return NotFound();
             }
-            else 
-            {
-                Student = student;
-            }
+
+            Fixtures = Student.Fixtures.ToList();
+
             return Page();
         }
     }
 }
+

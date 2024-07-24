@@ -28,7 +28,7 @@ namespace NewSportsAcademy.Pages.Sports
         public Sport Sport { get; set; } = default!;
         
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        
         public async Task<IActionResult> OnPostAsync()
         {
           if (!ModelState.IsValid || _context.Sports == null || Sport == null)
